@@ -12,7 +12,7 @@ class git {
   }
 
   package { 'boxen/brews/git':
-    ensure => '1.8.0-boxen1'
+    ensure => present
   }
 
   file { $git::config::configdir:
@@ -30,18 +30,8 @@ class git {
     require => File[$git::config::credentialhelper]
   }
 
-  file { "${git::config::configdir}/gitignore":
-    source  => 'puppet:///modules/git/gitignore',
-    require => File[$git::config::configdir]
-  }
-
   git::config::global{ 'credential.helper':
     value => $git::config::global_credentialhelper
-  }
-
-  git::config::global{ 'core.excludesfile':
-    value   => "${git::config::configdir}/gitignore",
-    require => File["${git::config::configdir}/gitignore"]
   }
 
   if $::gname {
