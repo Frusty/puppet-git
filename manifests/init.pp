@@ -4,15 +4,15 @@
 #
 #   include git
 class git {
-  require homebrew
-  require git::config
+  include homebrew
+  include git::config
 
   homebrew::formula { 'git':
     before => Package['boxen/brews/git'],
   }
 
   package { 'boxen/brews/git':
-    ensure => present
+    ensure => $git::config::version
   }
 
   file { $git::config::configdir:
